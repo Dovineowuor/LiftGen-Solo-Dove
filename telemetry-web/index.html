@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LiftGen | Telemetry & Energy Analytics</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="bg-blobs">
+        <div class="blob" style="top: -10%; left: -10%;"></div>
+        <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -5s;"></div>
+    </div>
+
+    <header>
+        <div class="logo">
+            <div class="logo-icon" style="background: var(--accent); color: #000;">G</div>
+            <h1>LiftGen Grid Portal | Region: Shaft-01</h1>
+        </div>
+        <div class="system-status">
+            <div class="status-indicator"></div>
+            <span>SCADA System: OPERATIONAL</span>
+            <span style="margin-left: 20px; color: var(--accent-storage);" id="system-time">--:--:--</span>
+        </div>
+    </header>
+
+    <main>
+        <!-- Grid Stability Meter -->
+        <div class="card" style="grid-column: span 1;">
+            <div class="card-header">
+                <div class="card-title">Grid Frequency</div>
+            </div>
+            <div class="freq-dial">
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                    <!-- Dial Scale Background -->
+                    <path d="M 20 80 A 40 40 0 0 1 80 80" fill="none" stroke="#111" stroke-width="2" stroke-dasharray="1 4"/>
+                    
+                    <!-- Tick Marks -->
+                    <line x1="20" y1="80" x2="25" y2="75" stroke="#333" stroke-width="1"/>
+                    <line x1="50" y1="40" x2="50" y2="46" stroke="#444" stroke-width="1"/>
+                    <line x1="80" y1="80" x2="75" y2="75" stroke="#333" stroke-width="1"/>
+
+                    <!-- Precision Needle (Centered) -->
+                    <g id="freq-needle-group" style="transform-origin: 50% 80%; transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);">
+                        <line x1="50" y1="80" x2="50" y2="45" stroke="var(--accent)" stroke-width="2" stroke-linecap="round"/>
+                        <circle cx="50" cy="80" r="3" fill="var(--accent)"/>
+                        <line x1="50" y1="45" x2="50" y2="40" stroke="var(--accent)" stroke-width="1" filter="url(#glow)"/>
+                    </g>
+
+                    <defs>
+                        <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+                            <feGaussianBlur stdDeviation="2" result="blur"/>
+                            <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                        </filter>
+                    </defs>
+                </svg>
+                <div class="freq-value phosphor-glow" id="freq-val" style="bottom: 10%; top: auto;">50.000</div>
+            </div>
+            <div class="precision-dial-labels" style="margin-top: 5px;">
+                <span>49.950</span>
+                <span>50.000</span>
+                <span>50.050</span>
+            </div>
+            <div style="text-align: center; font-size: 0.6rem; color: var(--text-dim); margin-top: 10px;">Utility Resolution: 0.001 Hz</div>
+        </div>
+
+        <div class="card card-large">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">ESG Impact & Financial ROI</div>
+            </div>
+            <div style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 20px;">
+                <div>
+                    <div class="esg-metric">
+                        <span>CO2 Emissions Offset</span>
+                        <span class="phosphor-glow" id="co2-offset">42.50 kg</span>
+                    </div>
+                    <div class="esg-metric">
+                        <span>Trees Equivalent</span>
+                        <span id="tree-equiv">12.15</span>
+                    </div>
+                    <div class="roi-label">Cummulative Savings</div>
+                    <div class="financial-ticker" id="savings-ticker">$1,450.25</div>
+                    <div style="font-size: 0.6rem; color: #444;">Currency: USD (Linked to Carbon Credits)</div>
+                </div>
+                <div style="border-left: 1px solid #111; padding-left: 20px;">
+                    <div class="esg-metric">
+                        <span>Carbon Credits (Est.)</span>
+                        <span class="phosphor-glow" style="color: var(--accent-storage);" id="carbon-credits">0.042500</span>
+                    </div>
+                    <div class="esg-metric">
+                        <span>Global ESG Score</span>
+                        <span style="color: var(--accent-energy);">AAA+</span>
+                    </div>
+                    <div class="roi-label">Avoided Energy Cost</div>
+                    <div class="phosphor-glow" style="font-size: 1.1rem; color: var(--accent-bus);" id="avoided-cost">KES 188,532</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Power Flow SLD (Interactive SVG) -->
+        <div class="card" style="grid-column: span 3;">
+            <div class="card-header">
+                <div class="card-title">Single Line Diagram (SLD) - Power Distribution</div>
+            </div>
+            <div class="sld-container" style="border-color: #111;">
+                <svg class="sld-svg" viewBox="0 0 800 200">
+                    <!-- Nodes -->
+                    <rect x="50" y="50" width="80" height="40" fill="#111" stroke="#333" id="node-gs"/>
+                    <text x="55" y="75" fill="#666" font-size="12">NODE GS-01</text>
+                    
+                    <rect x="50" y="110" width="80" height="40" fill="#111" stroke="#333" id="node-cf"/>
+                    <text x="55" y="135" fill="#666" font-size="12">NODE CF-02</text>
+
+                    <!-- Busbars -->
+                    <line x1="130" y1="70" x2="250" y2="70" class="busbar" id="flow-1"/>
+                    <line x1="130" y1="130" x2="250" y2="130" class="busbar" id="flow-2"/>
+                    
+                    <!-- Breakers -->
+                    <circle cx="190" cy="70" r="5" fill="#000" stroke="var(--accent)" id="brk-1"/>
+                    <circle cx="190" cy="130" r="5" fill="#000" stroke="var(--accent)" id="brk-2"/>
+                    
+                    <!-- Aggregator -->
+                    <rect x="250" y="40" width="100" height="120" fill="#050505" stroke="#222"/>
+                    <text x="260" y="105" fill="#555" font-size="14">AGG-HUB</text>
+
+                    <!-- Main Bus -->
+                    <line x1="350" y1="100" x2="500" y2="100" class="busbar" stroke-width="6" id="flow-main"/>
+                    
+                    <!-- Storage -->
+                    <rect x="500" y="70" width="100" height="60" fill="#111" stroke="var(--accent-storage)"/>
+                    <text x="515" y="105" fill="var(--accent-storage)" font-size="14">HY-STORAGE</text>
+
+                    <!-- Distribution -->
+                    <line x1="600" y1="100" x2="700" y2="100" class="busbar" id="flow-dist"/>
+                    <circle cx="720" cy="100" r="20" fill="#111" stroke="var(--accent-bus)"/>
+                    <text x="705" y="140" fill="var(--accent-bus)" font-size="12" text-anchor="middle">LV-DC BUS</text>
+                </svg>
+            </div>
+        </div>
+
+        <div class="card" style="grid-column: span 1;">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">Command Console</div>
+            </div>
+            <div style="margin-top: 10px;">
+                <button class="command-btn active" id="btn-brk-1">BRK-01 ON</button>
+                <button class="command-btn active" id="btn-brk-2">BRK-02 ON</button>
+            </div>
+            <div style="margin-top: 15px;">
+                <button class="command-btn" style="border-color: #444;" onclick="location.reload()">Reset SCADA</button>
+                <button class="command-btn" style="border-color: var(--accent-alert);">Emergency Cutout</button>
+            </div>
+        </div>
+
+        <!-- Storage Level -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Storage Level (LiFePO4)</div>
+            </div>
+            <div class="metric-value phosphor-glow" style="color: var(--accent-storage);" id="storage-level">0.0</div>
+            <div class="metric-unit">% Charge SOC</div>
+            <div class="storage-bar">
+                <div class="storage-progress" id="storage-progress" style="background: var(--accent-storage);"></div>
+            </div>
+        </div>
+
+        <!-- DC Bus Support -->
+        <div class="card" style="color: var(--accent-bus);">
+            <div class="card-header">
+                <div class="card-title">DC Bus Support</div>
+            </div>
+            <div class="metric-value phosphor-glow" id="bus-contribution">0.0</div>
+            <div class="metric-unit">W Dynamic Assist</div>
+            <div class="metric-trend">Offsetting Standby</div>
+        </div>
+
+        <!-- Node Aggregation & Health -->
+        <div class="card" style="color: var(--accent);">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">Predictive Health Index</div>
+            </div>
+            <div class="health-score" id="health-score">98.2%</div>
+            <div class="health-meter-container">
+                <div class="health-fill" id="health-fill"></div>
+            </div>
+            <div class="metric-unit">System Integrity</div>
+            <div class="metric-trend trend-up">Predictive: Optimal</div>
+        </div>
+
+        <!-- Charts -->
+        <!-- Additional Metrics -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Phase Distribution</div>
+            </div>
+            <div>
+                <div style="font-size: 0.7rem; color: #666; margin-bottom: 2px;">Phase L1</div>
+                <div class="phase-bar"><div class="phase-fill" id="p1-fill" style="width: 82%;"></div></div>
+                <div style="font-size: 0.7rem; color: #666; margin-bottom: 2px;">Phase L2</div>
+                <div class="phase-bar"><div class="phase-fill" id="p2-fill" style="width: 78%;"></div></div>
+                <div style="font-size: 0.7rem; color: #666; margin-bottom: 2px;">Phase L3</div>
+                <div class="phase-bar"><div class="phase-fill" id="p3-fill" style="width: 80%;"></div></div>
+            </div>
+        </div>
+
+        <div class="card card-large">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">Harvested Voltage History (Last 59 Rides)</div>
+                <div style="font-size: 0.65rem; color: var(--accent-energy);">Avg: 24.82V</div>
+            </div>
+            <div class="ride-history-container" id="ride-history">
+                <!-- Data bars injected by JS -->
+            </div>
+            <div class="ride-label-container">
+                <span>RIDE -59</span>
+                <span>RIDE -30</span>
+                <span>LATEST RIDE</span>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title">Phase Alignment (Phasor)</div>
+            </div>
+            <div class="phasor-container">
+                <svg viewBox="0 0 100 100" style="width: 100%; height: 100%;">
+                    <!-- Reference Circles -->
+                    <circle cx="50" cy="50" r="40" fill="none" stroke="#080808" stroke-width="1"/>
+                    <circle cx="50" cy="50" r="25" fill="none" stroke="#080808" stroke-width="1"/>
+                    
+                    <!-- Crosshair -->
+                    <line x1="10" y1="50" x2="90" y2="50" stroke="#111" stroke-width="0.5"/>
+                    <line x1="50" y1="10" x2="50" y2="90" stroke="#111" stroke-width="0.5"/>
+
+                    <!-- Phasors -->
+                    <g id="phasor-l1"><line x1="50" y1="50" x2="50" y2="15" stroke="#f00" stroke-width="2" stroke-linecap="round"/><circle cx="50" cy="15" r="1.5" fill="#f00"/></g>
+                    <g id="phasor-l2"><line x1="50" y1="50" x2="19.7" y2="67.5" stroke="#0f0" stroke-width="2" stroke-linecap="round"/><circle cx="19.7" cy="67.5" r="1.5" fill="#0f0"/></g>
+                    <g id="phasor-l3"><line x1="50" y1="50" x2="80.3" y2="67.5" stroke="#00f" stroke-width="2" stroke-linecap="round"/><circle cx="80.3" cy="67.5" r="1.5" fill="#00f"/></g>
+                </svg>
+            </div>
+            <div class="phasor-labels">
+                <span style="color: #f00;">L1: 0°</span>
+                <span style="color: #0f0;">L2: 120°</span>
+                <span style="color: #00f;">L3: 240°</span>
+            </div>
+        </div>
+
+        <!-- High-Precision Spectral Power Density Chart -->
+        <div class="card card-large">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">Spectral Power Density (Harmonic Stability)</div>
+            </div>
+            <div class="precision-chart">
+                <svg id="precision-line-chart" viewBox="0 0 400 150" style="width: 100%; height: 100%;">
+                    <!-- Vertical Grid Lines -->
+                    <line x1="50" y1="0" x2="50" y2="150" class="chart-grid"/>
+                    <line x1="100" y1="0" x2="100" y2="150" class="chart-grid"/>
+                    <line x1="150" y1="0" x2="150" y2="150" class="chart-grid"/>
+                    <line x1="200" y1="0" x2="200" y2="150" class="chart-grid"/>
+                    <line x1="250" y1="0" x2="250" y2="150" class="chart-grid"/>
+                    <line x1="300" y1="0" x2="300" y2="150" class="chart-grid"/>
+                    <line x1="350" y1="0" x2="350" y2="150" class="chart-grid"/>
+                    
+                    <!-- Frequency Scale Labels -->
+                    <text x="50" y="145" class="chart-label" text-anchor="middle">10Hz</text>
+                    <text x="150" y="145" class="chart-label" text-anchor="middle">50Hz</text>
+                    <text x="250" y="145" class="chart-label" text-anchor="middle">100Hz</text>
+                    <text x="350" y="145" class="chart-label" text-anchor="middle">200Hz</text>
+
+                    <!-- The Line -->
+                    <path id="spectral-path" class="chart-line" d="M 0 150 Q 50 140 100 130 T 400 150"/>
+                </svg>
+            </div>
+            <div class="metric-precise" style="margin-top: 5px;">THD (Total Harmonic Distortion): 0.042%</div>
+        </div>
+
+        <!-- Event Log -->
+        <div class="card-large">
+            <div class="card-header">
+                <div class="card-title">System Event Log (Real-time)</div>
+            </div>
+            <div class="log-container" id="event-log">
+                <div class="log-entry">[08:42:01] System Boot Initialized...</div>
+                <div class="log-entry">[08:42:05] SCADA Link Established.</div>
+                <div class="log-entry">[08:42:10] Substation-Alpha Node Reporting.</div>
+            </div>
+        </div>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

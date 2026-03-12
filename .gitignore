@@ -1,0 +1,13 @@
+# Git Ignore
+.DS_Store
+*.swp
+*.bak
+*.tmp
+.gemini/
+.env
+node_modules/
+build/
+bin/
+*.exe
+*.o
+*.a
