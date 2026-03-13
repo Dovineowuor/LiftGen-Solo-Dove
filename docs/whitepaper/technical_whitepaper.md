@@ -206,6 +206,14 @@ To validate the theoretical yields, the following field testing protocol is esta
 - **SOC Delta**: Battery State-of-Charge gain per 100 cycles.
 - **Harmonic Correlation**: Correlation between elevator health scoring and harvested spectral jitter.
 
+# 10. Carbon Credit Verification Protocol
+
+To monetize the energy harvested by LiftGen, the system implements a Measurement, Reporting, and Verification (MRV) protocol aligned with the **GHG Protocol for Project Accounting**.
+
+1.  **Grid Emission Factor (GEF)**: LiftGen assumes a project-specific GEF based on local grid carbon intensity (e.g., 0.33 kg CO2/kWh for East African regional grids).
+2.  **Verifiable Offsets**: Each harvesting node generates cryptographically signed energy signatures. The central hub aggregates these into 1,000 kg (1.0 tCO2e) bundles to generate standardized Carbon Credits.
+3.  **Registry Integration**: The technical architecture supports semi-automated auditing via carbon registries (e.g., Verra/Gold Standard), linking building telemetry directly to ESG financial instruments.
+
 ---
 
 That’s where theory meets steel cables and gravity—and the physics starts talking back.
