@@ -8,8 +8,8 @@ const state = {
     phaseLoad: 24.1,
     co2Offset: 42.50,
     carbonCredits: 0.042500,
-    savingsUSD: 1450.25,
-    avoidedCostKES: 188532,
+    savingsKsh: 188532.50,
+    avoidedCostKsh: 188532,
     healthScore: 98.2,
     breakers: {
         brk1: true,
@@ -87,8 +87,8 @@ function updateDashboard() {
     document.getElementById('co2-offset').textContent = `${state.co2Offset.toFixed(2)} kg`;
     document.getElementById('tree-equiv').textContent = (state.co2Offset / 4.1).toFixed(2);
     document.getElementById('carbon-credits').textContent = state.carbonCredits.toFixed(6);
-    document.getElementById('savings-ticker').textContent = `$${state.savingsUSD.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
-    document.getElementById('avoided-cost').textContent = `KES ${state.avoidedCostKES.toLocaleString()}`;
+    document.getElementById('savings-ticker').textContent = `Ksh ${state.savingsKsh.toLocaleString(undefined, {minimumFractionDigits: 2, maximumFractionDigits: 2})}`;
+    document.getElementById('avoided-cost').textContent = `Ksh ${state.avoidedCostKsh.toLocaleString()}`;
 
     // Health Score
     document.getElementById('health-score').textContent = `${state.healthScore.toFixed(1)}%`;
@@ -167,8 +167,8 @@ function simulateRideEvent() {
     addLog(`RIDE EVENT: Harvested Peak Voltage ${peakVoltage.toFixed(2)}V`);
     
     // Impact financials
-    state.savingsUSD += peakVoltage * 0.005;
-    state.avoidedCostKES += Math.floor(peakVoltage * 0.65);
+    state.savingsKsh += peakVoltage * 0.005;
+    state.avoidedCostKsh += Math.floor(peakVoltage * 0.65);
 }
 
 function startSimulation() {
