@@ -4,15 +4,53 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>LiftGen | Telemetry & Energy Analytics</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        bgDark: '#05070a',
+                        accent: '#00ff41',
+                        accentSecondary: '#008f11',
+                        accentEnergy: '#00ff41',
+                        accentStorage: '#f9d71c',
+                        accentBus: '#00d2ff',
+                        accentAlert: '#ff3131',
+                        textMain: '#d1d5db',
+                        textDim: '#6b7280',
+                        glassBg: 'rgba(10, 12, 16, 0.9)',
+                        glassBorder: '#1f2937'
+                    },
+                    fontFamily: {
+                        sans: ['Space Grotesk', 'monospace'],
+                        outfit: ['Outfit', 'sans-serif']
+                    }
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer utilities {
+            .phosphor-glow-tw {
+                color: theme('colors.accent');
+                text-shadow: 0 0 8px rgba(0, 255, 65, 0.4);
+            }
+            .glass-card {
+                background-color: theme('colors.glassBg');
+                border-color: theme('colors.glassBorder');
+            }
+        }
+    </style>
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="antialiased selection:bg-accent/30">
     <div class="bg-blobs">
         <div class="blob" style="top: -10%; left: -10%;"></div>
         <div class="blob" style="bottom: -10%; right: -10%; animation-delay: -5s;"></div>
     </div>
 
-    <header>
+    <header class="sticky top-0 z-50 bg-bgDark/80 backdrop-blur-2xl">
         <div class="logo">
             <div class="logo-icon" style="background: var(--accent); color: #000;">G</div>
             <h1>LiftGen Grid Portal | Region: Shaft-01</h1>
@@ -95,7 +133,7 @@
                 <div style="border-left: 1px solid #111; padding-left: 20px;">
                     <div class="esg-metric">
                         <span>Carbon Credits (Est.)</span>
-                        <span class="phosphor-glow" style="color: var(--accent-storage);" id="carbon-credits">0.000000</span>
+                        <span class="phosphor-glow-tw text-accentStorage" id="carbon-credits">0.000000</span>
                     </div>
                     <div class="esg-metric">
                         <span>Global ESG Score</span>
@@ -152,13 +190,13 @@
             <div class="card-header">
                 <div class="card-title phosphor-glow">Command Console</div>
             </div>
-            <div style="margin-top: 10px;">
-                <button class="command-btn active" id="btn-brk-1">BRK-01 ON</button>
-                <button class="command-btn active" id="btn-brk-2">BRK-02 ON</button>
+            <div class="mt-4 flex flex-wrap gap-3">
+                <button class="command-btn active px-4 py-2 rounded-lg font-bold tracking-wider text-xs transition-all duration-300 hover:shadow-[0_0_10px_rgba(0,255,65,0.4)]" id="btn-brk-1">BRK-01 ON</button>
+                <button class="command-btn active px-4 py-2 rounded-lg font-bold tracking-wider text-xs transition-all duration-300 hover:shadow-[0_0_10px_rgba(0,255,65,0.4)]" id="btn-brk-2">BRK-02 ON</button>
             </div>
-            <div style="margin-top: 15px;">
-                <button class="command-btn" style="border-color: #444;" onclick="location.reload()">Reset SCADA</button>
-                <button class="command-btn" style="border-color: var(--accent-alert);">Emergency Cutout</button>
+            <div class="mt-4 flex flex-wrap gap-3">
+                <button class="command-btn px-4 py-2 rounded-lg font-bold tracking-wider text-xs transition-all duration-300 hover:shadow-[0_0_10px_rgba(255,255,255,0.2)]" style="border-color: #444;" onclick="location.reload()">Reset SCADA</button>
+                <button class="command-btn px-4 py-2 rounded-lg font-bold tracking-wider text-xs transition-all duration-300 hover:shadow-[0_0_10px_rgba(255,49,49,0.4)]" style="border-color: var(--accent-alert); color: var(--accent-alert);">Emergency Cutout</button>
             </div>
         </div>
 
@@ -214,17 +252,51 @@
         </div>
 
         <div class="card card-large">
-            <div class="card-header">
-                <div class="card-title phosphor-glow">Harvested Voltage History (Last 59 Rides)</div>
-                <div style="font-size: 0.65rem; color: var(--accent-energy);" id="avg-voltage">Avg: 0.00V</div>
+            <div class="card-header flex justify-between items-center mb-4">
+                <div class="card-title phosphor-glow-tw m-0">Harvested Voltage History</div>
+                <div class="flex gap-2">
+                    <button id="btn-filter-50" class="px-2 py-1 rounded text-[10px] font-bold border border-glassBorder bg-accent text-black transition-colors">LAST 50</button>
+                    <button id="btn-filter-hour" class="px-2 py-1 rounded text-[10px] font-bold border border-glassBorder bg-transparent text-textDim transition-colors">1 HOUR</button>
+                    <button id="btn-filter-all" class="px-2 py-1 rounded text-[10px] font-bold border border-glassBorder bg-transparent text-textDim transition-colors">ALL</button>
+                </div>
             </div>
-            <div class="ride-history-container" id="ride-history">
+            
+            <div class="flex justify-between text-xs mb-2">
+                 <div class="text-accentEnergy font-bold" id="avg-voltage">Avg: 0.00V</div>
+                 <div class="text-textDim" id="ride-count-label">0 Rides</div>
+            </div>
+
+            <div class="ride-history-container mt-0" id="ride-history">
                 <!-- Data bars injected by JS -->
             </div>
-            <div class="ride-label-container">
-                <span>RIDE -59</span>
-                <span>RIDE -30</span>
+            <div class="ride-label-container text-textDim mt-1">
+                <span>OLDEST</span>
+                <span>DATA</span>
                 <span>LATEST RIDE</span>
+            </div>
+        </div>
+
+        <!-- Ride Analytics Table -->
+        <div class="card card-large">
+            <div class="card-header">
+                <div class="card-title phosphor-glow-tw">Ride Analytics &mdash; Informant Log</div>
+                <div class="text-[10px] text-textDim font-mono">Latest 20 Rides</div>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-xs font-mono">
+                    <thead>
+                        <tr class="border-b border-glassBorder text-textDim uppercase tracking-widest text-[10px]">
+                            <th class="py-1.5 px-2 text-left">#</th>
+                            <th class="py-1.5 px-2 text-left">Time</th>
+                            <th class="py-1.5 px-2 text-left">Hour Slot</th>
+                            <th class="py-1.5 px-2 text-left">Voltage</th>
+                            <th class="py-1.5 px-2 text-left">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="ride-table-body">
+                        <!-- injected by JS -->
+                    </tbody>
+                </table>
             </div>
         </div>
 
@@ -242,16 +314,21 @@
                     <line x1="10" y1="50" x2="90" y2="50" stroke="#111" stroke-width="0.5"/>
                     <line x1="50" y1="10" x2="50" y2="90" stroke="#111" stroke-width="0.5"/>
 
-                    <!-- Phasors -->
-                    <g id="phasor-l1"><line x1="50" y1="50" x2="50" y2="15" stroke="#f00" stroke-width="2" stroke-linecap="round"/><circle cx="50" cy="15" r="1.5" fill="#f00"/></g>
-                    <g id="phasor-l2"><line x1="50" y1="50" x2="19.7" y2="67.5" stroke="#0f0" stroke-width="2" stroke-linecap="round"/><circle cx="19.7" cy="67.5" r="1.5" fill="#0f0"/></g>
-                    <g id="phasor-l3"><line x1="50" y1="50" x2="80.3" y2="67.5" stroke="#00f" stroke-width="2" stroke-linecap="round"/><circle cx="80.3" cy="67.5" r="1.5" fill="#00f"/></g>
+                    <!-- Phasors (Dynamic Vectors) -->
+                    <line id="line-l1" x1="50" y1="50" x2="50" y2="15" stroke="#f00" stroke-width="2" stroke-linecap="round"/>
+                    <circle id="dot-l1" cx="50" cy="15" r="1.5" fill="#f00"/>
+
+                    <line id="line-l2" x1="50" y1="50" x2="19.7" y2="67.5" stroke="#0f0" stroke-width="2" stroke-linecap="round"/>
+                    <circle id="dot-l2" cx="19.7" cy="67.5" r="1.5" fill="#0f0"/>
+
+                    <line id="line-l3" x1="50" y1="50" x2="80.3" y2="67.5" stroke="#00f" stroke-width="2" stroke-linecap="round"/>
+                    <circle id="dot-l3" cx="80.3" cy="67.5" r="1.5" fill="#00f"/>
                 </svg>
             </div>
             <div class="phasor-labels">
-                <span style="color: #f00;">L1: 0°</span>
-                <span style="color: #0f0;">L2: 120°</span>
-                <span style="color: #00f;">L3: 240°</span>
+                <span id="label-l1" style="color: #f00;">L1: 0°</span>
+                <span id="label-l2" style="color: #0f0;">L2: 120°</span>
+                <span id="label-l3" style="color: #00f;">L3: 240°</span>
             </div>
         </div>
 
