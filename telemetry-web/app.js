@@ -11,6 +11,7 @@ const state = {
     savingsKsh: 188532.50,
     avoidedCostKsh: 188532,
     healthScore: 98.2,
+    thd: 0.042,
     breakers: {
         brk1: true,
         brk2: true
@@ -42,6 +43,7 @@ function init() {
     document.getElementById('btn-brk-2').addEventListener('click', () => toggleBreaker('brk2', 'btn-brk-2', 'brk-2'));
 
     renderRideHistory();
+    updateDashboard();
     startSimulation();
 }
 
@@ -119,6 +121,13 @@ function updateDashboard() {
     // High-Precision Spectral Chart
     updateSpectralChart();
 
+    // Avg Voltage update
+    const avgVal = state.rideHistory.reduce((a, b) => a + b, 0) / state.rideHistory.length;
+    document.getElementById('avg-voltage').textContent = `Avg: ${avgVal.toFixed(2)}V`;
+
+    // THD update
+    document.getElementById('thd-val').textContent = `THD (Total Harmonic Distortion): ${state.thd.toFixed(3)}%`;
+
     // System Time
     document.getElementById('system-time').textContent = new Date().toLocaleTimeString();
 }
@@ -191,6 +200,9 @@ function startSimulation() {
 
         // Health Score minor fluctuation based on activity
         state.healthScore = Math.max(85, state.healthScore + (Math.random() - 0.52) * 0.1);
+        
+        // THD minor jitter
+        state.thd = 0.042 + (Math.random() - 0.5) * 0.005;
 
         state.busContribution = ((state.breakers.brk1 ? 1 : 0) + (state.breakers.brk2 ? 1 : 0)) * (5 + Math.random() * 2);
 

@@ -25,6 +25,16 @@
     </header>
 
     <main>
+        <!-- Primary Energy Metric -->
+        <div class="card">
+            <div class="card-header">
+                <div class="card-title phosphor-glow">Total Energy Harvested</div>
+            </div>
+            <div class="metric-value phosphor-glow" id="energy-harvested">0.000</div>
+            <div class="metric-unit">kWh (Cumulative)</div>
+            <div class="metric-trend trend-up">Grid Injection Enabled</div>
+        </div>
+
         <!-- Grid Stability Meter -->
         <div class="card" style="grid-column: span 1;">
             <div class="card-header">
@@ -54,7 +64,7 @@
                         </filter>
                     </defs>
                 </svg>
-                <div class="freq-value phosphor-glow" id="freq-val" style="bottom: 10%; top: auto;">50.000</div>
+                <div class="freq-value phosphor-glow" id="freq-val" style="bottom: 10%; top: auto;">00.000</div>
             </div>
             <div class="precision-dial-labels" style="margin-top: 5px;">
                 <span>49.950</span>
@@ -72,27 +82,27 @@
                 <div>
                     <div class="esg-metric">
                         <span>CO2 Emissions Offset</span>
-                        <span class="phosphor-glow" id="co2-offset">42.50 kg</span>
+                        <span class="phosphor-glow" id="co2-offset">0.00 kg</span>
                     </div>
                     <div class="esg-metric">
                         <span>Trees Equivalent</span>
-                        <span id="tree-equiv">12.15</span>
+                        <span id="tree-equiv">0.00</span>
                     </div>
                     <div class="roi-label">Cummulative Savings</div>
-                    <div class="financial-ticker" id="savings-ticker">Ksh 188,532.50</div>
+                    <div class="financial-ticker" id="savings-ticker">Ksh --.--</div>
                     <div style="font-size: 0.6rem; color: #444;">Currency: Ksh (Linked to Carbon Credits)</div>
                 </div>
                 <div style="border-left: 1px solid #111; padding-left: 20px;">
                     <div class="esg-metric">
                         <span>Carbon Credits (Est.)</span>
-                        <span class="phosphor-glow" style="color: var(--accent-storage);" id="carbon-credits">0.042500</span>
+                        <span class="phosphor-glow" style="color: var(--accent-storage);" id="carbon-credits">0.000000</span>
                     </div>
                     <div class="esg-metric">
                         <span>Global ESG Score</span>
                         <span style="color: var(--accent-energy);">AAA+</span>
                     </div>
                     <div class="roi-label">Avoided Energy Cost</div>
-                    <div class="phosphor-glow" style="font-size: 1.1rem; color: var(--accent-bus);" id="avoided-cost">Ksh 188,532</div>
+                    <div class="phosphor-glow" style="font-size: 1.1rem; color: var(--accent-bus);" id="avoided-cost">Ksh 0</div>
                 </div>
             </div>
         </div>
@@ -179,7 +189,7 @@
             <div class="card-header">
                 <div class="card-title phosphor-glow">Predictive Health Index</div>
             </div>
-            <div class="health-score" id="health-score">98.2%</div>
+            <div class="health-score" id="health-score">0.0%</div>
             <div class="health-meter-container">
                 <div class="health-fill" id="health-fill"></div>
             </div>
@@ -206,7 +216,7 @@
         <div class="card card-large">
             <div class="card-header">
                 <div class="card-title phosphor-glow">Harvested Voltage History (Last 59 Rides)</div>
-                <div style="font-size: 0.65rem; color: var(--accent-energy);">Avg: 24.82V</div>
+                <div style="font-size: 0.65rem; color: var(--accent-energy);" id="avg-voltage">Avg: 0.00V</div>
             </div>
             <div class="ride-history-container" id="ride-history">
                 <!-- Data bars injected by JS -->
@@ -271,7 +281,7 @@
                     <path id="spectral-path" class="chart-line" d="M 0 150 Q 50 140 100 130 T 400 150"/>
                 </svg>
             </div>
-            <div class="metric-precise" style="margin-top: 5px;">THD (Total Harmonic Distortion): 0.042%</div>
+            <div class="metric-precise" style="margin-top: 5px;" id="thd-val">THD (Total Harmonic Distortion): 0.000%</div>
         </div>
 
         <!-- Event Log -->
@@ -280,9 +290,7 @@
                 <div class="card-title">System Event Log (Real-time)</div>
             </div>
             <div class="log-container" id="event-log">
-                <div class="log-entry">[08:42:01] System Boot Initialized...</div>
-                <div class="log-entry">[08:42:05] SCADA Link Established.</div>
-                <div class="log-entry">[08:42:10] Substation-Alpha Node Reporting.</div>
+                <!-- Log entries injected by JS -->
             </div>
         </div>
     </main>
