@@ -33,9 +33,9 @@ The central hub for multi-node aggregation and DC bus injection.
 | 3M VHB Tape | Heavy-duty industrial adhesive | As req |
 
 ## 4. Total Project Estimates (Prototype Phase)
-- **Single Node Cost (Est.)**: $45.00
-- **Hub Cost (Est.)**: $180.00
-- **Total System (4 Nodes + Hub)**: $360.00
+- **Single Node Cost (Est.)**: Ksh. 7,000
+- **Hub Cost (Est.)**: Ksh. 21,000
+- **Total System (4 Nodes + Hub)**: Ksh. 49,000
 
 ---
 *Note: Prices are estimates based on low-volume prototype purchasing.*
