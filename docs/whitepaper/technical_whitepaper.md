@@ -158,21 +158,11 @@ Future implementations may also integrate LiftGen data streams with smart buildi
 
 ---
 
-# 7. Conclusion
-
-LiftGen demonstrates that elevator infrastructure can be transformed into a source of distributed micro-energy while simultaneously enhancing system monitoring capabilities. By harvesting mechanical vibrations and frictional motion inherent to elevator operation, the system generates auxiliary electrical power without interfering with primary elevator functions or safety mechanisms.
-
-The combination of hybrid energy storage, distributed sensing, and predictive telemetry creates a platform that contributes both to building energy optimization and to the long-term reliability of vertical transportation systems.
-
-As buildings become increasingly intelligent and interconnected, systems such as LiftGen illustrate how existing infrastructure can be augmented to provide new functionality, improved efficiency, and deeper operational insight.
-
----
-
-# 8. Mathematical Power Yield Modeling
+# 7. Mathematical Power Yield Modeling
 
 The power harvesting potential of LiftGen ($P_{harv}$) is a function of the available ambient kinetic and vibrational energy ($E_k$) and the conversion efficiency ($\eta$) of the transducer array.
 
-### 8.1 Vibration Harvesting Equations
+### 7.1 Vibration Harvesting Equations
 For a piezoelectric cantilever node, the instantaneous power $P(t)$ is modeled by:
 $$P(t) = \frac{k^2 \cdot Q^2 \cdot \omega^3 \cdot Y_0^2 \cdot \zeta}{\omega_n^2}$$
 Where:
@@ -182,37 +172,45 @@ Where:
 - $Y_0$: Vibration amplitude (displacement).
 - $\xi$: Damping ratio.
 
-### 8.2 Ride-Cycle Estimation
+### 7.2 Ride-Cycle Estimation
 For a standard 10-floor ride (30m travel), the available kinetic energy from guide rail friction $F_f$ can be estimated:
 $$W_f = \int F_f \, ds \approx \mu \cdot m \cdot g \cdot D$$
 The system targets a capture of $0.05\%$ of this energy. For a 1000kg cabin, $W_f \approx 29,430 \, \text{Joules}$. A $0.05\%$ harvest yields **14.7 Joules per cycle**, sufficient to power low-energy telemetry nodes indefinitely.
 
-# 9. Experimental Prototype Methodology
+# 8. Experimental Prototype Methodology
 
 To validate the theoretical yields, the following field testing protocol is established:
 
-### 9.1 Instrumented Test Shaft
+### 8.1 Instrumented Test Shaft
 - **Deployment**: Install 4 nodes on a 1500kg traction lift.
 - **Placement**: Counterweight (N1), Main Cabin Frame (N2, N3), Guide Shoe (N4).
 - **Control**: Reference power meter installed on the main lift VFD DC bus to monitor baseline draw.
 
-### 9.2 Data Collection Protocol
+### 8.2 Data Collection Protocol
 1. **Calibration Run**: Empty cabin travel to establish structural "noise" harmonics.
 2. **Payload Sweep**: Incremental testing with 0%, 50%, and 100% rated load.
 3. **Harmonic Mapping**: Recording vibration spectral density using the node's internal FFT engine (10Hz–500Hz).
 
-### 9.3 Validation Metrics
+### 8.3 Validation Metrics
 - **Specific Yield**: Watts harvested per meter of travel (W/m).
 - **SOC Delta**: Battery State-of-Charge gain per 100 cycles.
 - **Harmonic Correlation**: Correlation between elevator health scoring and harvested spectral jitter.
 
-# 10. Carbon Credit Verification Protocol
+# 9. Carbon Credit Verification Protocol
 
 To monetize the energy harvested by LiftGen, the system implements a Measurement, Reporting, and Verification (MRV) protocol aligned with the **GHG Protocol for Project Accounting**.
 
 1.  **Grid Emission Factor (GEF)**: LiftGen assumes a project-specific GEF based on local grid carbon intensity (e.g., 0.33 kg CO2/kWh for East African regional grids).
 2.  **Verifiable Offsets**: Each harvesting node generates cryptographically signed energy signatures. The central hub aggregates these into 1,000 kg (1.0 tCO2e) bundles to generate standardized Carbon Credits.
 3.  **Registry Integration**: The technical architecture supports semi-automated auditing via carbon registries (e.g., Verra/Gold Standard), linking building telemetry directly to ESG financial instruments.
+
+# 10. Conclusion
+
+LiftGen demonstrates that elevator infrastructure can be transformed into a source of distributed micro-energy while simultaneously enhancing system monitoring capabilities. By harvesting mechanical vibrations and frictional motion inherent to elevator operation, the system generates auxiliary electrical power without interfering with primary elevator functions or safety mechanisms.
+
+The combination of hybrid energy storage, distributed sensing, and predictive telemetry creates a platform that contributes both to building energy optimization and to the long-term reliability of vertical transportation systems.
+
+As buildings become increasingly intelligent and interconnected, systems such as LiftGen illustrate how existing infrastructure can be augmented to provide new functionality, improved efficiency, and deeper operational insight.
 
 ---
 
