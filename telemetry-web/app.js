@@ -196,7 +196,8 @@ function startSimulation() {
     setInterval(() => {
         state.energyHarvested += Math.random() * 0.05;
         state.co2Offset += 0.0025;
-        state.carbonCredits = state.co2Offset * 0.0001;
+        // Verified Carbon Credit Math: 1 Credit = 1000 kg CO2
+        state.carbonCredits = state.co2Offset / 1000;
         
         state.storageLevel = Math.min(100, state.storageLevel + (Math.random() - 0.48) * 0.05);
         state.frequency = 50.000 + (Math.random() - 0.5) * 0.012; 
