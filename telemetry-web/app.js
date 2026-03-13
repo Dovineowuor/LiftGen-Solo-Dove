@@ -52,7 +52,10 @@ function init() {
 function updateClock() {
     const timeEl = document.getElementById('system-time');
     if (timeEl) {
-        timeEl.textContent = new Date().toLocaleTimeString('en-KE', { hour12: false });
+        timeEl.textContent = new Date().toLocaleTimeString('en-KE', { 
+            hour12: false,
+            timeZone: 'Africa/Nairobi'
+        });
     }
 }
 
@@ -168,7 +171,10 @@ function addLog(msg, isAlert = false) {
     if (!log) return;
     const entry = document.createElement('div');
     entry.className = isAlert ? 'log-entry alert' : 'log-entry';
-    const time = new Date().toLocaleTimeString('en-KE', { hour12: false });
+    const time = new Date().toLocaleTimeString('en-KE', { 
+        hour12: false,
+        timeZone: 'Africa/Nairobi'
+    });
     entry.textContent = `[${time}] ${msg}`;
     log.prepend(entry);
     if (log.children.length > 25) log.lastChild.remove();
