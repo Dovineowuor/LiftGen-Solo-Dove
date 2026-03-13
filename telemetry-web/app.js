@@ -44,7 +44,16 @@ function init() {
 
     renderRideHistory();
     updateDashboard();
+    updateClock();
+    setInterval(updateClock, 1000);
     startSimulation();
+}
+
+function updateClock() {
+    const timeEl = document.getElementById('system-time');
+    if (timeEl) {
+        timeEl.textContent = new Date().toLocaleTimeString('en-GB', { hour12: false });
+    }
 }
 
 function toggleBreaker(id, btnId, svgId) {
@@ -127,9 +136,6 @@ function updateDashboard() {
 
     // THD update
     document.getElementById('thd-val').textContent = `THD (Total Harmonic Distortion): ${state.thd.toFixed(3)}%`;
-
-    // System Time
-    document.getElementById('system-time').textContent = new Date().toLocaleTimeString();
 }
 
 function updateSpectralChart() {
